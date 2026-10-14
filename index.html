@@ -6,71 +6,174 @@
 <title>البحث في قائمة الأسعار</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--green:#174f3b;--green-2:#22684d;--gold:#c9a45c;--ink:#1f2933;--muted:#687581;--line:#e3e9e5;--surface:#fff;--page:#f3f6f4;--soft:#edf4ef;--shadow:0 8px 28px rgba(24,55,39,.07)}
+:root {
+  --green: #174f3b;
+  --green-2: #22684d;
+  --gold: #c9a45c;
+  --ink: #1f2933;
+  --muted: #687581;
+  --line: #e3e9e5;
+  --surface: #ffffff;
+  --surface-2: #fbfcfb;
+  --page: #f3f6f4;
+  --soft: #edf4ef;
+  --code-bg: #f1f5f2;
+  --code-ink: #365646;
+  --tag-bg: #f5f1e8;
+  --tag-ink: #765d2d;
+  --tag-border: #eee3cb;
+  --bundle-bg: #eef7ff;
+  --bundle-ink: #1d4ed8;
+  --bundle-border: #bfdbfe;
+  --shadow: 0 8px 28px rgba(24,55,39,.07);
+}
+
+[data-theme="dark"] {
+  --green: #2ea87c;
+  --green-2: #3bc493;
+  --gold: #d4b26f;
+  --ink: #e6edf3;
+  --muted: #9ca8b4;
+  --line: #2b353c;
+  --surface: #182026;
+  --surface-2: #12181d;
+  --page: #0d1216;
+  --soft: #1f3029;
+  --code-bg: #222d35;
+  --code-ink: #85d1b2;
+  --tag-bg: #2d2618;
+  --tag-ink: #e2c07d;
+  --tag-border: #4a3e25;
+  --bundle-bg: #17253b;
+  --bundle-ink: #93c5fd;
+  --bundle-border: #264069;
+  --shadow: 0 8px 28px rgba(0,0,0,.35);
+}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--page);color:var(--ink);font-family:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;line-height:1.6}
-.wrap{max-width:1000px;margin:0 auto;padding:28px 20px 56px;display:flex;flex-direction:column;gap:18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+body{margin:0;background:var(--page);color:var(--ink);font-family:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;line-height:1.6;transition:background .2s,color .2s}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 110px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);transition:background .2s,border-color .2s}
 .head{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;align-items:center;gap:20px;padding:24px 28px;border-top:4px solid var(--gold)}
 .head:after{content:"";position:absolute;inset:auto -30px -72px auto;width:190px;height:190px;border:26px solid rgba(201,164,92,.08);border-radius:50%;pointer-events:none}
-.head img{width:112px;height:76px;object-fit:contain;flex:0 0 auto}
-.head .t{display:flex;flex-direction:column;gap:5px;flex:1 1 260px;min-width:0;position:relative;z-index:1}
-h1{margin:0;font-size:clamp(24px,3.2vw,32px);line-height:1.35;font-weight:700;color:var(--green)}
+.head img{width:112px;height:76px;object-fit:contain;flex:0 0 auto;background:#fff;padding:6px;border-radius:12px}
+.head .t{display:flex;flex-direction:column;gap:5px;flex:1 1 240px;min-width:0;position:relative;z-index:1}
+h1{margin:0;font-size:clamp(22px,3vw,30px);line-height:1.35;font-weight:700;color:var(--green)}
 .muted{font-size:14px;color:var(--muted)}
 #taxnote{font-weight:600;color:var(--green-2)}
-.search-card{padding:22px 24px;display:flex;flex-direction:column;gap:13px}
-.lbl{font-size:16px;font-weight:700;color:#293a31}
+
+.theme-btn{background:var(--surface-2);color:var(--ink);border:1.5px solid var(--line);min-height:44px;padding:0 14px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;z-index:2}
+.theme-btn:hover{background:var(--soft);border-color:var(--green)}
+
+.search-card{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.lbl{font-size:14px;font-weight:700;color:var(--ink);display:flex;flex-direction:column;gap:6px}
 .row{display:flex;gap:10px;align-items:stretch}
-input[type=search]{flex:1 1 auto;min-width:0;height:58px;padding:0 18px;font:inherit;font-size:18px;color:var(--ink);background:#fbfcfb;border:1.5px solid #cbd7ce;border-radius:13px;transition:border-color .15s,box-shadow .15s,background .15s}
-input::placeholder{color:#89948d}
+input[type=search],input[type=number],select{font:inherit;color:var(--ink);background:var(--surface-2);border:1.5px solid var(--line);border-radius:12px;transition:border-color .15s,box-shadow .15s,background .15s}
+input[type=search]{flex:1 1 auto;min-width:0;height:56px;padding:0 18px;font-size:17px}
+input::placeholder{color:var(--muted);opacity:.75}
 :focus-visible{outline:3px solid rgba(201,164,92,.55);outline-offset:2px}
-input[type=search]:focus{border-color:var(--green-2);background:#fff;box-shadow:0 0 0 4px rgba(34,104,77,.08)}
-button,.btn{font:inherit;font-size:15px;font-weight:700;min-height:46px;padding:0 18px;border-radius:12px;cursor:pointer;color:#fff;background:var(--green);border:1px solid var(--green);display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:background .15s,transform .15s}
+input[type=search]:focus,input[type=number]:focus,select:focus{border-color:var(--green-2);background:var(--surface)}
+
+button,.btn{font:inherit;font-size:14px;font-weight:700;min-height:44px;padding:0 16px;border-radius:12px;cursor:pointer;color:#fff;background:var(--green);border:1px solid var(--green);display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:background .15s,transform .15s,border-color .15s}
 button:hover{background:var(--green-2)}
 button:active{transform:translateY(1px)}
-#clear{min-width:74px;height:58px;color:var(--green);background:#fff;border-color:#cad8ce}
+#clear{min-width:74px;height:56px;color:var(--green);background:var(--surface);border-color:var(--line)}
 #clear:hover{background:var(--soft)}
 #clear[hidden]{display:none}
-.meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;padding-top:4px}
+.adv-grid select,.adv-grid input{height:46px;padding:0 12px;font-size:14px;font-weight:600;width:100%}
+.global-disc-wrap{display:flex;gap:6px}
+.global-disc-wrap input{flex:1}
+.global-disc-wrap select{width:82px;flex:0 0 auto}
+
+.meta-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:4px;border-top:1px solid var(--line)}
 #count{font-weight:700;color:var(--green);font-size:14px}
-.chk{display:flex;align-items:center;gap:9px;min-height:42px;font-size:14px;font-weight:600;color:#47554c;cursor:pointer}
-.chk input{width:19px;height:19px;margin:0;accent-color:var(--green)}
-#list{display:flex;flex-direction:column;gap:9px}
-.item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 20px;transition:border-color .15s,box-shadow .15s}
-.item:hover{border-color:#c8d8ce;box-shadow:0 4px 14px rgba(24,55,39,.045)}
-.item .n{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:7px}
-.item .name{font-size:16px;font-weight:600;line-height:1.65;overflow-wrap:anywhere}
+
+#list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;transition:border-color .15s,box-shadow .15s}
+.item:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.item.is-bundle{border-right:4px solid var(--gold)}
+.item .n{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:7px}
+.item .name{font-size:16px;font-weight:700;line-height:1.6;overflow-wrap:anywhere}
+.tags-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .item .c{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
-.code{direction:ltr;padding:3px 10px;border-radius:7px;background:#f1f5f2;color:#365646;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:700;letter-spacing:.3px}
+.code{direction:ltr;padding:3px 10px;border-radius:7px;background:var(--code-bg);color:var(--code-ink);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;font-weight:700;letter-spacing:.3px}
+.tag{display:inline-flex;align-items:center;width:max-content;background:var(--tag-bg);color:var(--tag-ink);border:1px solid var(--tag-border);border-radius:7px;padding:2px 9px;font-size:12px;font-weight:700}
+.tag.bundle-tag{background:var(--bundle-bg);color:var(--bundle-ink);border-color:var(--bundle-border)}
+
+.item .actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.price-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .price{display:flex;align-items:baseline;gap:6px;color:var(--green);white-space:nowrap;background:var(--soft);padding:7px 12px;border-radius:10px}
-.price b{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.price b{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
 .price span{font-size:13px;font-weight:700}
-.noprice{font-size:13px;font-weight:700;color:#8a631e;background:#fff6e3;border:1px solid #f0dfb8;border-radius:9px;padding:8px 11px}
-.empty{background:#fff;border:1px dashed #c8d5cc;border-radius:14px;padding:34px 20px;text-align:center;font-size:16px;color:var(--muted)}
-.hidden-note{background:#fff8e9;border:1px solid #f0dfb8;border-radius:12px;padding:13px 16px;font-size:14px;color:#75561e}
-#more-wrap{text-align:center;padding:5px 0 12px}
-#more{min-width:190px;background:#fff;color:var(--green);border-color:#c8d8ce}
-#more:hover{background:var(--soft)}
-.footer-note{text-align:center;color:#89948d;font-size:12px;padding-top:2px}
-@media(max-width:600px){.wrap{padding:14px 12px 32px;gap:13px}.head{padding:18px;gap:14px;border-radius:16px}.head img{width:82px;height:62px}.search-card{padding:17px 15px}.row{gap:7px}input[type=search]{height:54px;font-size:16px;padding:0 13px}#clear{height:54px;min-width:58px;padding:0 11px}.item{padding:13px 14px;gap:10px}.item .n{flex-basis:100%}.price{margin-inline-start:auto}.price b{font-size:21px}.meta{align-items:flex-start}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+.old-price{font-size:12px;color:var(--muted);text-decoration:line-through;padding-inline:4px}
 
-.filters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}
-select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd7ce;border-radius:12px;background:#fbfcfb;color:var(--ink);font:inherit;font-weight:600}
-.item .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.copy-btn{min-height:40px;padding:0 13px;font-size:13px;background:#fff;color:var(--green);border-color:#c8d8ce;white-space:nowrap}
-.copy-btn:hover{background:var(--soft)}
-.discount-box{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:8px}
-.discount-box label{font-size:12px;color:var(--muted);font-weight:600}
-.discount-input{width:100px;min-width:0;height:38px;padding:0 9px;border:1px solid #cbd7ce;border-radius:9px;font:inherit;font-size:14px}
+.discount-box{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.discount-input{width:92px;min-width:0;height:38px;padding:0 9px;border-radius:9px;font-size:13px}
 .discount-type{height:38px;padding:0 8px;font-size:13px;border-radius:9px}
-.discount-result{font-size:13px;color:var(--green);font-weight:700;background:#edf4ef;border-radius:8px;padding:6px 9px}
-.discount-result[hidden]{display:none}
-.tag{display:inline-flex;align-items:center;width:max-content;background:#f5f1e8;color:#765d2d;border:1px solid #eee3cb;border-radius:7px;padding:2px 8px;font-size:12px;font-weight:700}
-.item .n{gap:6px}
-@media(max-width:600px){.filters{grid-template-columns:1fr}.filters select{height:48px}.item .actions{width:100%;justify-content:space-between}.copy-btn{flex:1}}
 
+.btn-outline{min-height:40px;padding:0 13px;font-size:13px;background:var(--surface);color:var(--green);border:1px solid var(--line);white-space:nowrap}
+.btn-outline:hover{background:var(--soft);border-color:var(--green)}
+.btn-quote{min-height:40px;padding:0 14px;font-size:13px;background:var(--green);color:#fff;border:1px solid var(--green);white-space:nowrap}
+.btn-quote.in-cart{background:var(--gold);border-color:var(--gold);color:#1f2933}
+
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:34px 20px;text-align:center;font-size:16px;color:var(--muted)}
+#more-wrap{text-align:center;padding:5px 0 12px}
+#more{min-width:190px;background:var(--surface);color:var(--green);border-color:var(--line)}
+#more:hover{background:var(--soft)}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;padding-top:2px}
+
+/* شريط عرض السعر العائم */
+.quote-bar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1000px;background:var(--surface);border:2px solid var(--gold);border-radius:16px;padding:12px 20px;box-shadow:0 12px 34px rgba(0,0,0,.22);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;z-index:90}
+.quote-bar[hidden]{display:none}
+.quote-summary{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.quote-badge{background:var(--gold);color:#1f2933;font-weight:700;padding:4px 12px;border-radius:99px;font-size:14px}
+.quote-total{font-size:18px;font-weight:700;color:var(--green)}
+.quote-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* نافذة تفاصيل عرض السعر */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
+.modal-backdrop[hidden]{display:none}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:20px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow:hidden}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.modal-head h2{margin:0;font-size:20px;color:var(--green)}
+.modal-body{padding:18px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.quote-table{width:100%;border-collapse:collapse;font-size:14px}
+.quote-table th,.quote-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
+.quote-table th{color:var(--muted);font-weight:700;font-size:13px}
+.qty-ctrl{display:inline-flex;align-items:center;gap:6px}
+.qty-btn{min-height:28px;width:28px;padding:0;border-radius:7px;font-size:15px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.qty-btn:hover{background:var(--soft)}
+.del-btn{background:transparent;color:#e11d48;border:none;min-height:28px;padding:0 6px;font-size:13px}
+.del-btn:hover{background:rgba(225,29,72,.1)}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--line);background:var(--surface-2);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.wa-btn{background:#25D366;border-color:#25D366;color:#fff}
+.wa-btn:hover{background:#1ebe5a}
+
+@media(max-width:640px){
+  .wrap{padding:14px 12px 120px;gap:13px}
+  .head{padding:16px;gap:12px;border-radius:16px}
+  .head img{width:78px;height:56px}
+  .search-card{padding:16px 14px}
+  .item{padding:14px;gap:12px}
+  .item .n{flex-basis:100%}
+  .item .actions{width:100%;justify-content:space-between}
+  .quote-bar{padding:12px 14px;bottom:10px;width:calc(100% - 20px)}
+  .quote-actions{width:100%}
+  .quote-actions button{flex:1}
+}
+
+/* تنسيق خاص للطباعة PDF */
+@media print {
+  body{background:#fff;color:#000}
+  .search-card,#list,#more-wrap,.footer-note,.quote-bar,.theme-btn,.modal-foot,.del-btn,.qty-btn,.close-modal-btn{display:none!important}
+  .wrap{padding:0;max-width:100%}
+  .modal-backdrop{position:static;background:none;padding:0;display:block!important}
+  .modal{box-shadow:none;border:none;max-width:100%;max-height:none}
+  .modal-head{border-bottom:2px solid #174f3b}
+}
 </style>
 </head>
 <body>
@@ -83,31 +186,58 @@ select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd
 <div class="muted" id="taxnote"></div>
 <div class="muted">بتاريخ 6 / 4 / 2026</div>
 </div>
+<button id="theme-toggle" type="button" class="theme-btn" aria-label="تبديل الوضع الليلي">🌙 الوضع الليلي</button>
 </div>
 
 <div class="card search-card">
-<label class="lbl" for="q">ابحث عن منتج بالاسم أو الكود</label>
+<label class="lbl" for="q">ابحث عن منتج بالاسم أو الكود أو السعة بالقدم</label>
 <div class="row">
-<input id="q" type="search" placeholder="مثال: ثلاجة 350 أو 10533130" autocomplete="off" aria-label="البحث باسم المنتج أو الكود">
+<input id="q" type="search" placeholder="مثال: ثلاجة 16 قدم أو تكييف 1.5 أو 10533130" autocomplete="off">
 <button id="clear" type="button" hidden>مسح</button>
 </div>
-<div class="filters">
-<label class="lbl" for="category" style="font-size:14px">نوع الجهاز
-<select id="category" aria-label="فلترة حسب نوع الجهاز">
-<option value="all">كل أنواع الأجهزة</option>
-<option value="fridge">ثلاجات</option>
-<option value="freezer">ديب فريزر</option>
-<option value="washer">غسالات</option>
-<option value="dishwasher">غسالات أطباق</option>
-<option value="stove">بوتاجازات وأفران</option>
-<option value="ac">تكييفات</option>
-<option value="waterheater">سخانات</option>
-<option value="cooler">مبردات مياه وهواء</option>
-<option value="fan">مراوح</option>
-<option value="vacuum">مكانس</option>
-<option value="other">أجهزة أخرى</option>
-</select></label>
-<div class="muted" id="count" aria-live="polite"></div>
+
+<div class="adv-grid">
+  <label class="lbl" for="category">نوع الجهاز
+    <select id="category">
+      <option value="all">كل أنواع الأجهزة</option>
+      <option value="fridge">ثلاجات</option>
+      <option value="freezer">ديب فريزر</option>
+      <option value="washer">غسالات</option>
+      <option value="dishwasher">غسالات أطباق</option>
+      <option value="stove">بوتاجازات وأفران</option>
+      <option value="ac">كل التكييفات (أطقم وقطع)</option>
+      <option value="ac_bundle">تكييفات (جهاز كامل فقط)</option>
+      <option value="waterheater">سخانات</option>
+      <option value="fan">مراوح</option>
+      <option value="other">أجهزة أخرى</option>
+    </select>
+  </label>
+
+  <label class="lbl" for="sort">ترتيب النتائج
+    <select id="sort">
+      <option value="default">الترتيب الافتراضي</option>
+      <option value="price_asc">السعر: من الأقل للأعلى</option>
+      <option value="price_desc">السعر: من الأعلى للأقل</option>
+    </select>
+  </label>
+
+  <label class="lbl" for="max-price">الحد الأقصى للميزانية (جنيه)
+    <input id="max-price" type="number" min="0" step="500" placeholder="مثال: 20000">
+  </label>
+
+  <label class="lbl" for="global-disc">خصم عام موحد
+    <div class="global-disc-wrap">
+      <input id="global-disc" type="number" min="0" step="any" placeholder="قيمة الخصم">
+      <select id="global-disc-type" aria-label="نوع الخصم العام">
+        <option value="percent">%</option>
+        <option value="cash">جنيه</option>
+      </select>
+    </div>
+  </label>
+</div>
+
+<div class="meta-bar">
+  <div class="muted" id="count" aria-live="polite"></div>
 </div>
 </div>
 
@@ -115,8 +245,50 @@ select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd
 <div id="more-wrap" hidden><button id="more" type="button">عرض المزيد من النتائج</button></div>
 <div class="footer-note">قائمة الأسعار للاستخدام الداخلي — يُرجى التأكد من آخر تحديث قبل اعتماد السعر</div>
 
+</div>
 
+<!-- شريط سلة عرض الأسعار العائم -->
+<div id="quote-bar" class="quote-bar" hidden>
+  <div class="quote-summary">
+    <span id="quote-count" class="quote-badge">0 أصناف</span>
+    <span>إجمالي عرض السعر: <b id="quote-total" class="quote-total">0 جنيه</b></span>
+  </div>
+  <div class="quote-actions">
+    <button id="open-quote" type="button">معاينة وتصدير العرض</button>
+    <button id="clear-quote" type="button" class="btn-outline">إفراغ</button>
+  </div>
+</div>
 
+<!-- نافذة عرض السعر التفصيلية -->
+<div id="quote-modal" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h2 id="modal-title">عرض سعر مجمع</h2>
+      <button id="close-modal" type="button" class="btn-outline close-modal-btn">إغلاق ✕</button>
+    </div>
+    <div class="modal-body">
+      <table class="quote-table">
+        <thead>
+          <tr>
+            <th>الصنف</th>
+            <th>سعر الوحدة</th>
+            <th>الكمية</th>
+            <th>الإجمالي</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="quote-tbody"></tbody>
+      </table>
+    </div>
+    <div class="modal-foot">
+      <div>الإجمالي النهائي (شامل الضريبة والخصم): <b id="modal-total" class="quote-total">0 جنيه</b></div>
+      <div class="quote-actions">
+        <button id="copy-quote-all" type="button" class="btn-outline">نسخ النص</button>
+        <button id="wa-quote" type="button" class="wa-btn">إرسال WhatsApp</button>
+        <button id="print-quote" type="button">طباعة / PDF</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script id="pricedata" type="application/json">{"stamp":"2026-04-06T00:00:00.000Z","taxRate":14,"items":[["10412100","فرن كريازي4 ش60ستيل ذاتي غازبدون",9771.93],["10532130","فرن كريازي5ش90ستيل ذاتي مدوربدون",13074.56],["10533160","فرن كريازى 5 شعلة جوكر دى لوكس امان كامل بمروحة 9700 W/1F",11214.91],["10534150","فرن كريازي5ش90*60استيل Joker9700",10587.72],["20010002","ثلاجة كريازي - K330/1العروسة",14754.39],["20010007","ثلاجة كريازى فيروزه 480لتر - سيلفر E500N/2",29276.32],["20010009","ثلاجة كريازى لؤلؤه 535لتر - سيلفر E550N/2",30004.39],["20010010","K28M ثلاجة كريازي 280لتر مرجانة -رف سلك",13574.56],["20010011","KR350/2 ثلاجه كريازى 350 لتر كلاسيك",16600.88],["20010012","K330 ثلاجة كريازي 12 قدم",14118.42],["20010015","ER370N/2 ثلاجه كريازى 370لتر برلنتى -سيلفر",19754.39],["20010016","ثلاجة كريازى زمرده 450لتر - سيلفر E450N/2",26592.11],["20010023","ثلاجه كريازى 350 لتر الماظه (معدله) KR350/4",16907.89],["20010032","ثلاجة كريازى الجوهره K460/2",19438.6],["20010044","ثلاجة سولتير بريمير 370لتر -سيلفر KH370LN",20407.89],["20010046","ثلاجة سولتير بريمير 370لتر -اسود KH370LN",20587.72],["20020102","ثلاجة كريازى 350 لتر KH350LD",17078.95],["20020103","ثلاجة كريازى ديفروست 350 لتر مقبض جانبى - سيلفر دهبى KH350LD/1",17078.95],["20020104","ثلاجة كريازى ديفروست 350 لتر مقبض جانبى - اسود KH350LD/1",17078.95],["30010007","ديب فريزر كريازي 336 لتر",19008.77],["30010011","ديب فريزر كريازي 338 لتر عادي KH338 -",19135.96],["10411100","فرن كريازي 4ش60ملون ذاتي غازبدون",9166.67],["10411102","فرن كريازي4ش 60ملون ذاتي غازامان",10903.51],["10411103","فرن كريازي 4 شعلةملون1مدورجانب",9350.88],["10411110","فرن كريازي 1+3 ك 60 ملون ذاتي بدو",9877.19],["10412102","فرن كريازي4ش60ستيل ذاتي غازامان",11342.11],["10412103","فرن كريازي 4شعلة ستيل1مدورجانب",9833.33],["10412110","فرن كريازي1+3 ك 60 ستيل ذاتي بدو",10442.98],["10413100","فرن كريازى 4شعلة ملون 6600",8513.16],["10414100","فرن كريازى 4 شعلة ستيل 6600",8916.67],["10414101","فرن كريازي 60*60ستانلس بومبية-كاست 6600s1-",9877.19],["10415100","فرن 4 شعلة ستانلس سمارت - Smart 6FC60",19013.16],["10415101","فرن 4 شعلة ستانلس سمارت غاز طبيعي - Smart 6FC60",19013.16],["10415102","فرن كريازى 4 شعلة جوكر 6700S-",7013.16],["10531110","فرن كريازي5ش90ملون ذاتي1كهربي بدو",12780.7],["10531113","فرن كريازي5ش1مدور1+كهرباء",12969.3],["10531130","فرن كريازي5ش90ملون ذاتي مدوربدون",12372.81],["10531132","فرن كريازي5ش90ملون ذاتي مدورامان",14328.95],["10531140","فرن كريازي5ش90ملون ذاتي سمكةبدون",12372.81],["10531142","فرن كريازي5ش90ملون ذاتي سمكةامان",14328.95],["10531150","فرن كريازي 2+3مدور90ملون ذاتي بدو",12565.79],["10531160","فرن كريازي1+3س1+م90ملون ذاتي بدو",12565.79],["10531162","فرن كريازي 1+3س1+م الوان ذاتي امان",14504.39],["10531230","فرن كريازي 5 شعلة الوان كاست كينج8-مفتاح-امان شوايةوفرن",16052.63],["10532110","فرن كريازي5ش90ستيل ذاتي1كهربي بدو",13451.75],["10532113","فرن كريازى 5 ش استيل (1 مدورة + 1 كهرباء)",13482.46],["10532132","فرن كريازي5ش90ستيل ذاتي مدورامان",14811.4],["10532140","فرن كريازي5ش90ستيل ذاتي سمكةبدون",13074.56],["10532142","فرن كريازي5ش90ستيل ذاتي سمكةامان",14811.4],["10532150","فرن كريازي 2+3مدور90ستيل ذاتي بدو",13144.74],["10532160","فرن كريازي+3اس1+م90ستيل ذاتي بدو",13144.74],["10532162","فرن كريازى 1+3س 1+م 90 ستيل ذاتى أمان",14859.65],["10532230","فرن كريازى 5 شعلة كينج امان كامل بمروحة 9605 F/1",16254.39],["10533130","فرن كريازى 5شعلة ملون 9600",11495.61],["10533132","الوان M فرن كريازى 5 شعلة 8600",11969.3],["10533150","فرن كريازي5شعلة دي لوكس ستيل جوكر 9700",10587.72],["10533230","فرن كريازى 5 شعلة ملون سطح ستيل كاست كينج8-مفتاح-امان شوايةوفرن",17324.56],["10534130","فرن كريازى 5 شعلة ستيل 9600",12320.18],["10534132","استيل M فرن كريازى 5 شعلة 8600",12763.16],["10535130","فرن كريازى 5 شعلة ملون 8600",10232.46],["10535132","الوان M فرن كريازى 5 شعلة 9600",13184.21],["10536130","فرن كريازى 5شعلة ستيل 8600",10973.68],["10536132","استيل M فرن كريازى 5 شعلة 9600",13929.82],["10536150","فرن كريازي 90*60ستانلس بومبية-كاست 9600s1-",13451.75],["10536151","كاست فرن كريازي 90*60ستانلس بومبية 8-مفتاح امان شواية وفرن 9600sm1--",14929.82],["10536152","فرن كريازي 90*60ستانلس بومبية 8-مفتاح امان كامل -كاست 9600sm12-",16802.63],["10536153","فرن كريازي 90*60ستانلس كينج 8-مفتاح امان كامل-كاست 6901/12-",19798.25],["10537101","فرن كريازى5ش80*60 امان فرن وشواية - مروحة وشاشة 8604/1F-M",13807.02],["10537102","فرن كريازى5ش80*60امان كامل - مروحة وشاشة 8604/1F",15188.6],["10537110","فرن كريازى 5ش90*60امان فرن وشواية - مروحة وشاشة 9604/1F-M",15035.09],["10537111","فرن كريازى5ش90*60امان كامل - مروحة وشاشة 9604/1F",16078.95],["10537120","فرن كريازى 5ش كينج - مروحة وشاشة 9605F-M",17767.54],["10537121","فرن كريازى 5شكينج امان كامل - مروحة وشاشة 9605F",19592.11],["10537122","فرن كريازى 5ش شبك زهر امان كامل - مروحة وشاشة 9604F",17855.26],["10538100","فرن 5 شعلة ستانلس سمارت 90FC9 Smart -",24065.79],["10538101","فرن 5 شعلة ستانلس سمارت غاز طبيعي 90FC9 Smart -",24065.79],["10538102","فرن 5 ش ستانلس سمارت 2 مروحة انبوبة 90 Smart 9/1FC",23105.26],["10538103","فرن 5 ش ستانلس سمارت 2 مروحة غاز طبيعي 90 Smart 9/1FC",23105.26],["10631120","فرن كريازي 2+4 ك90ملون ذاتي بدون",13622.81],["10632120","فرن كريازي 2+4 ك 90ستيل ذاتي بدو",14298.25],["180070001","مروحة كريازى 18 بوصة بالريموت KHF18 -",1877.19],["190110001","وحدة خارجية تكييف كريازى 1.5حصان ديجيتال بارد فقط KAC12CO/O/FOB",11367.54],["190110002","وحدة داخلية تكييف كريازى حائطى1.5 حصان ديجيتال بارد فقط KAC12CO/I/F0B",6853.51],["190110003","وحدة خارجية تكييف كريازى 1.5 حصان ديجيتال بارد/ساخن KAC12CH/O/F0B",12035.96],["190110004","وحدة داخلية تكييف كريازى حائطى1.5حصان ديجيتال بارد/ساخن KAC12CH/I/F0B",7042.98],["190110050","حامل تكييف كريازى 1.5 حصان",464.91],["190110051","وحدة خارجية تكييف كريازى 2.25حصان ديجيتال بارد فقط KAC18CO/O/F0B",16185.96],["190110052","وحدة داخلية تكييف كريازى حائطى 2.25حصان ديجيتال بارد فقط KAC18CO/I/F0B",7817.54],["190110053","وحدة خارجية تكييف كريازى 2.25حصان ديجيتال بارد/ساخن KAC18CH/O/F0B",18497.37],["190110054","وحدة داخلية تكييف كريازى حائطى 2.25حصان ديجيتال بارد/ساخن KAC18CH/I/F0B",8440.35],["190110100","حامل تكييف كريازى 2.25ح 3 / ح",670.18],["190110101","وحدة خارجية تكييف كريازى 3حصان ديجيتال بارد فقط KAC24CO/O/F0B",19606.14],["190110102","وحدة داخلية تكييف كريازى حائطى 3حصان ديجيتال بارد فقط KAC24CO/I/F0B",9045.61],["190110103","وحدة خارجية تكييف كريازى 3 حصان ديجيتال بارد/ساخن KAC24CH/O/F0B",22586.84],["190110104","وحدة داخلية تكييف كريازى حائطى 3حصان ديجيتال بارد/ساخن KAC24CH/I/F0B",9638.6],["190110105","وحدة خارجية تكييف كريازى 3حصان ديجيتال بارد فقط - انفرتر KAC24CO/O/VOB",26485.09],["190110106","وحدة داخلية تكييف كريازى حائطى 3حصان ديجيتال بارد فقط - انفرتر KAC24CO/I/VOB",11946.49],["20010003","K320/3 ثلاجة كريازي 320 لتر ستار",15894.74],["20010005","KR350/1 ثلاجه كريازى 350 لتر الماظه",16907.89],["20010006","K320/2 ثلاجه كريازى 320 لتر ياقوته",15679.82],["20010013","KR350/3 ثلاجه كريازى 350 لتر دياموند",16907.89],["20010018","ثلاجة كريازي 280 لتر KH282/1LD",13732.46],["20010019","ER370N/3 ثلاجة كريازى 370لتر سولتير-سيلفر",19802.63],["20010020","K320/1 ثلاجه كريازى 320 لتر كريستاله",14692.98],["20010021","K315 ثلاجه كريازى 315 لتر سنيوريتا سلك باب واحد",11552.63],["20010028","K325 ثلاجه كريازى 325 لتر هاي لوكس باب واحد",11811.4],["20010029","ثلاجة كريازى زمرده تربو 450لتر- سيلفر E470NV/2",27557.02],["20010030","ثلاجة كريازى فيروزة تربو 480لتر- سيلفر E520NV/2",30206.14],["20010031","ثلاجة كريازى لؤلؤة تربو 535لتر- سيلفر E570NV/2",30890.35],["20010033","KH371NV/2 ثلاجة كريازى 370لتر سولتير تربو-سيلفر",20390.35],["20010043","ثلاجة سولتير بريمير 370لتر -ابيض جلد KH370LN",20407.89],["20010045","ثلاجة سولتير بريمير 370لتر -بيج دهبي KH370LN",20587.72],["20010047","ثلاجة سولتير بريمير 370لتر -سيلفر دهبي KH370LN",20587.72],["20010054","ثلاجة كريازى زمرده تربو 450لتر- سيلفر دهبي E470NV/2",27815.79],["20010055","ثلاجة كريازى زمرده تربو 450لتر- اسود E470NV/2",27815.79],["20010056","ثلاجة كريازى فيروزة تربو 480لتر- سيلفر دهبي E520NV/2",30442.98],["20010057","ثلاجة كريازى فيروزة تربو 480لتر- اسود E520NV/2",30442.98],["20010058","ثلاجة كريازى لؤلؤة تربو 535لتر- سيلفر دهبي E570NV/2",31184.21],["20010059","ثلاجة كريازى لؤلؤة تربو 535لتر- اسود E570NV/2",31184.21],["20010062","ER370N/3 ثلاجة كريازى 370لتر سولتير- سيلفر دهبي",19991.23],["20010063","ER370N/3 ثلاجة كريازى 370لتر سولتير- اسود",19991.23],["20010064","KH371NV/2 ثلاجة كريازى 370لتر سولتير تربو-سيلفر دهبي",20552.63],["20010065","KH371NV/2 ثلاجة كريازى 370لتر سولتير تربو-اسود",20552.63],["20010066","KH371NV/3 ثلاجة سولتير تربو بشاشة 370لتر- سيلفر",21758.77],["20010067","KH371NV/3 ثلاجة سولتير تربو بشاشة 370لتر-سيلفر دهبي",21938.6],["20010068","KH371NV/3 ثلاجة سولتير تربو بشاشة 370لتر-اسود",21938.6],["20010069","KH370LN/3 ثلاجة سولتير بريمير بشاشة 370لتر-سيلفر",21815.79],["20010070","KH370LN/3 ثلاجة سولتير بريمير بشاشة 370لتر-سيلفر دهبي",21964.91],["20010071","KH370LN/3 ثلاجة سولتير بريمير بشاشة 370لتر- اسود",21964.91],["20010072","KH370LN/1ثلاجة سولتير إليجينت 370لتر مقبض جانبى- سيلفر",20407.89],["20010073","KH370LN/1ثلاجة سولتير إليجينت 370لتر مقبض جانبى- اسود",20587.72],["20020211","KH380LN/15 ثلاجة كريازي انفرتر380لتر-اسود",33008.77],["20020212","ثلاجة كريازي 380 لتر- سيلفر KH380LN",29337.72],["20020213","KH380LN/15 ثلاجة كريازي انفرتر380لتر-سيلفر",33008.77],["20020214","ثلاجة كريازي 380 لتر- ستيل KH380LN",29337.72],["20020215","ثلاجة كريازي 380 لتر- سيلفر دهبي KH380LN",29337.72],["20020216","ثلاجة كريازي 380 لتر- اسود KH380LN",29337.72],["20020222","ثلاجة كريازي 425 لتر- سيلفر KH425LN",32210.53],["20020223","ثلاجة كريازي 425 لتر- بيج دهبي KH425LN",32210.53],["20020224","ثلاجة كريازي 425 لتر- ستيل KH425LN",32210.53],["20020225","ثلاجة كريازي 425 لتر- سيلفر دهبي KH425LN",32210.53],["20020226","ثلاجة كريازي 425 لتر- اسود KH425LN",32210.53],["20020233","ثلاجة كريازي 450 لتر- بيج دهبي KH450LN",33425.44],["20020234","ثلاجة كريازي 450 لتر- ستيل KH450LN",33425.44],["20020235","ثلاجة كريازي 450 لتر- سيلفر دهبي KH450LN",33425.44],["20020236","ثلاجة كريازي 450 لتر- اسود KH450LN",33425.44],["20020237","ثلاجة كريازي450لتر مقبض جانبي-اسود KH450LN/1",33425.44],["20020243","ثلاجة كريازي 540 لتر- بيج دهبي KH540LN",40609.65],["20020244","ثلاجة كريازي 540 لتر- ستيل KH540LN",40609.65],["20020245","ثلاجة كريازي 540 لتر- سيلفر دهبي KH540LN",40609.65],["20020246","ثلاجة كريازي 540 لتر- اسود KH540LN",40609.65],["20020253","ثلاجة كريازي 625 لتر- بيج دهبي KH625LN",41780.7],["20020254","ثلاجة كريازي 625 لتر- ستيل KH625LN",41780.7],["20020255","ثلاجة كريازي 625 لتر- سيلفر دهبي KH625LN",41780.7],["20020256","ثلاجة كريازي 625 لتر- اسود KH625LN",41780.7],["20020263","ثلاجة كريازي 690 لتر- بيج دهبي KH690LN",42662.28],["20020264","ثلاجة كريازي 690 لتر- ستيل KH690LN",42662.28],["20020265","ثلاجة كريازي 690 لتر- سيلفر دهبي KH690LN",42662.28],["20020266","ثلاجة كريازي 690 لتر- اسود KH690LN",42662.28],["20020267","ثلاجة كريازي690لتر مقبض جانبي-اسود KH690LN/1",42662.28],["20020301","KH625LN/15 ثلاجة كريازي انفرتر625لتر-سيلفر",45236.84],["20020302","KH625LN/15 ثلاجة كريازي انفرتر625لتر-ستيل",45907.89],["20020303","KH625LN/15 ثلاجة كريازي انفرتر625لتر-سيلفر دهبي",45907.89],["20020304","KH625LN/15 ثلاجة كريازي انفرتر625لتر-اسود",45907.89],["20020330","KH690LN/15 ثلاجة كريازي انفرتر690لتر-سيلفر",46197.37],["20020331","KH690LN/15 ثلاجة كريازي انفرتر690لتر-ستيل",46850.88],["20020332","KH690LN/15 ثلاجة كريازي انفرتر690لتر-سيلفر دهبي",46850.88],["20020333","KH690LN/15 ثلاجة كريازي انفرتر690لتر-اسود",46850.88],["20021230","ثلاجة كريازي 450 لتر- سيلفر KH450LN",33425.44],["20021240","ثلاجة كريازي 540 لتر- سيلفر KH540LN",40008.77],["20021250","ثلاجة كريازي 625 لتر- سيلفر KH625LN",41092.11],["20021260","ثلاجة كريازي 690 لتر- سيلفر KH690LN",42021.93],["30010004","ديب فريزر كريازى 140 لتر",12714.91],["30010005","ديب فريزر كريازى 180 لتر",13495.61],["30010006","ديب فريزر كريازى 220 لتر",15214.91],["30010008","ديب فريزر كريازي 145 لتر عادي KH145 -",12758.77],["30010009","ديب فريزر كريازي 185 لتر عادي KH185-",13548.25],["30010010","ديب فريزر كريازي 225 لتر عادي KH225 -",15214.91],["30010022","ديب فريزر كريازي4درج ديجيتال",22785.09],["30010023","ديب فريزر كريازي5درج ديجيتال",24280.7],["30010024","ديب فريزر كريازي6درج ديجيتال",26385.96],["30010028","- KH145 CF ديب فريزر 145 لتر ديجيتال",13206.14],["30010029","- KH185 CF ديب فريزر185 لتر ديجيتال",14008.77],["30010030","-KH225 CF ديب فريزر 225 لتر ديجيتال",15706.14],["30010031","- KH338 CF ديب فريزر 338 لتر ديجيتال",19552.63],["30010032","KH235VF/1 ديب فريزر 5 درج ديجيتال مقبض جانبى - اسود",25179.82],["30010033","/ACM MONOديب فريزر 5 درج ديجيتال -ستيل",25179.82],["30010034","/METALIC PL-2ديب فريزر 5 درج ديجيتال -سيلفر",25083.33],["30010035","/UG0147NSديب فريزر 5 درج ديجيتال -سيلفر ذهبى",25179.82],["30010036","/ACM MONOديب فريزر 6 درج ديجيتال -ستيل",28039.47],["30010037","/METALIC PL-2ديب فريزر 6 درج ديجيتال -سيلفر",27929.82],["30010038","/UG0147NSديب فريزر 6 درج ديجيتال -سيلفر ذهبى",28039.47],["30010039","/UGH0044N ديب فريزر 6 درج ديجيتال -اسود",28039.47],["30010040","KH256VF/1 ديب فريزر 6د ديجيتال مقبض جانبي-اسود",28039.47],["40290013","K2TW- 7 غسالة كريازى هاف اتوماتيك 7 ك بالطلمبة ط",5065.79],["40290014","K2TW- 9 غسالة كريازى هاف اتوماتيك 9 ك بالطلمبة ط",5311.4],["40290015","KW1209 غساله كريازى 9 كيلو - ابيض",19122.81],["40290016","KW1210 غساله كريازى 10 كيلو - ابيض",19785.09],["40290017","KW1209-S غساله كريازى 9 كيلو- سيلفر",19565.79],["40290018","KW1210-S غساله كريازى 10 كيلو- سيلفر",20206.14],["40290019","KW1209-S غساله كريازى 9 كيلو- رمادي ميتالك",19565.79],["40290020","KW1210-S غساله كريازى 10 كيلو- رمادي ميتالك",20206.14],["40290050","غسالة كريازى توب لودينج - Touch طراز KTW- 1212-CS",19192.98],["40290051","غسالة كريازى توب لودينج - Button طراز KTW- 1212b-CS",17789.47],["40290060","غسالة كريازي توب لودينج طراز KTW- 1215-CS",24192.98],["50280005","سخان كريازي غاز انبوبة 5 - لتر",3872.81],["50280007","سخان كريازى غاز طبيعى 5 لتر",3872.81],["50280008","سخان كريازى غاز انبوبة 5 لتر - شاحن وبطارية",4127.19],["50280009","سخان كريازى غاز انبوبة 10 لتر - شاحن وبطارية",6263.16],["50280010","سخان كريازي غاز انبوبة 10 - لتر",5991.23],["50280011","سخان كريازى غاز طبيعى 10 لتر",5991.23],["50280012","سخان كريازى غاز 10 لتر ستار انبوبة KH10/1-",4592.11],["50280013","سخان كريازى غاز 10 لتر ستار طبيعي KH10/1 -",4592.11],["50280014","سخان كريازى غاز 10 لتر ستار KH10/1 - adaptor",4864.04],["50280015","- KH5/1 سخان كريازى غاز 5 لتر ستار انبوبة",3201.75],["50280016","- KH5/1 سخان كريازى غاز 5 لتر ستار طبيعي",3201.75],["50280017","سخان كريازى غاز 5 لتر ستارانبوبة KH5/1-adaptor",3495.61],["50280018","سخان كريازى غاز 5 لتر ستار-غاز طبيعي KH5/1adaptor",3495.61],["50280019","سخان كريازى غاز 10لتر ستار-غاز طبيعي KH10/1-adaptor",4864.04],["50280020","سخان كريازى غاز طبيعى 5 لتر-شاحن وبطارية",4127.19],["50280021","سخان كريازى غاز طبيعى 10 لتر-شاحن وبطارية",6263.16],["50280024","سخان كهرباء كريازى 45 لتر",3491.23],["50280025","سخان كهرباء كريازى 55 لتر",3662.28],["50280026","سخان كهرباء كريازى 65 لتر",3947.37],["50280031","سخان كهرباء كريازي 45لتر ديجتال",3802.63],["50280032","سخان كريازي كهرباء 55لتر ديجتال",3929.82],["50280033","سخان كريازي كهرباء 65لتر ديجيتال",4223.68],["50280034","سخان كريازي كهرباء65لتر افقي",3995.61]]}</script>
@@ -126,6 +298,22 @@ select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd
   var data = JSON.parse(document.getElementById('pricedata').textContent);
   var $ = function (id) { return document.getElementById(id); };
   var PAGE_SIZE = 80, visibleLimit = PAGE_SIZE, framePending = false;
+  var taxRate = Number(data.taxRate) || 0;
+  var formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits:0});
+
+  // 1. إدارة الوضع الليلي
+  var savedTheme = localStorage.getItem('kp_theme') || 'light';
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    $('theme-toggle').textContent = t === 'dark' ? '☀️ الوضع النهاري' : '🌙 الوضع الليلي';
+    localStorage.setItem('kp_theme', t);
+  }
+  applyTheme(savedTheme);
+  $('theme-toggle').addEventListener('click', function () {
+    var current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
   function norm(s) {
     return String(s).toLowerCase()
       .replace(/[\u064B-\u065F\u0670\u0640]/g, '')
@@ -134,6 +322,7 @@ select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd
       .replace(/[۰-۹]/g, function (d) { return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)); })
       .replace(/\s+/g, ' ').trim();
   }
+
   function categoryFor(name) {
     var n = norm(name);
     if (/ديب فريزر|فريزر/.test(n)) return 'freezer';
@@ -148,114 +337,409 @@ select{width:100%;min-width:0;height:50px;padding:0 14px;border:1.5px solid #cbd
     if (/مكنسه|مكنسة/.test(n)) return 'vacuum';
     return 'other';
   }
-  function fridgeFeet(name) {
+
+  // توسيع حساب القدم ليشمل كل الثلاجات والديب فريزر تلقائياً
+  function calcFeet(name, cat) {
     var n = norm(name);
-    if (!/ثلاجه|ثلاجة/.test(n)) return '';
-    if (/لؤلؤه|لؤلؤة|لؤلؤه/.test(n)) return '20 قدم';
-    if (/فيروزه|فيروزة/.test(n)) return '18 قدم';
-    if (/زمرده|زمردة/.test(n)) return '16 قدم';
-    if (/سولتير|سولتيير|برلنت|برلنتي/.test(n)) return '14 قدم';
+    if (cat !== 'fridge' && cat !== 'freezer') return '';
+    if (/لؤلؤه/.test(n)) return '20 قدم';
+    if (/فيروزه/.test(n)) return '18 قدم';
+    if (/زمرده/.test(n)) return '16 قدم';
+    if (/سولتير|برلنت/.test(n)) return '14 قدم';
+    if (/12 قدم/.test(n)) return '12 قدم';
+    var m = n.match(/(\d{3})\s*لتر/);
+    if (m) {
+      var liters = parseInt(m[1], 10);
+      if (liters >= 650) return '25 قدم';
+      if (liters >= 600) return '22 قدم';
+      if (liters >= 520) return '20 قدم';
+      if (liters >= 470) return '18 قدم';
+      if (liters >= 410) return '16 قدم';
+      if (liters >= 360) return '14 قدم';
+      if (liters >= 310) return '12 قدم';
+      if (liters >= 260) return '10 قدم';
+      return Math.round(liters / 28.3) + ' قدم';
+    }
     return '';
   }
-  var INDEX = data.items.map(function (it, order) {
-    var cat = categoryFor(it[1]), feet = fridgeFeet(it[1]);
-    var code = norm(it[0]), name = norm(it[1]);
-    var extra = feet ? ' ثلاجه ' + feet : '';
-    var hay = norm(code + ' ' + name + ' ' + cat + ' ' + extra);
-    return {code:it[0], name:it[1], price:Number(it[2]), order:order, codeNorm:code,
-      nameNorm:name, hay:hay, flat:hay.replace(/\s/g,''), category:cat, feet:feet};
-  });
-  var taxRate = Number(data.taxRate) || 0;
-  var formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits:0});
-  $('taxnote').textContent = 'الأسعار شاملة ضريبة ' + taxRate + '% ومقرّبة لأقرب جنيه';
-  $('count').textContent = 'الأصناف المسعّرة: ' + INDEX.length;
-  function findMatches(query, category) {
-    var tokens = norm(query).split(' ').filter(Boolean), results = [];
-    for (var i=0;i<INDEX.length;i++) {
-      var it=INDEX[i];
-      if (category !== 'all' && it.category !== category) continue;
-      var ok=true;
-      for(var j=0;j<tokens.length;j++) if(it.hay.indexOf(tokens[j])===-1 && it.flat.indexOf(tokens[j])===-1){ok=false;break;}
-      if(ok) results.push(it);
+
+  // 2. توليد أطقم التكييفات الكاملة تلقائياً (دمج الوحدة الداخلية + الخارجية)
+  var rawItems = data.items.slice();
+  var acGroups = {};
+  rawItems.forEach(function (it) {
+    var code = it[0], name = it[1], price = Number(it[2]);
+    var match = name.match(/(KAC\d+[A-Z]+)\/([IO])\/([A-Z0-9]+)/i);
+    if (match) {
+      var modelKey = (match[1] + '/' + match[3]).toUpperCase().replace(/0/g, 'O');
+      if (!acGroups[modelKey]) acGroups[modelKey] = {};
+      if (match[2].toUpperCase() === 'O') acGroups[modelKey].outdoor = {code: code, name: name, price: price};
+      if (match[2].toUpperCase() === 'I') acGroups[modelKey].indoor = {code: code, name: name, price: price};
     }
-    if(tokens.length) {
-      var q=norm(query);
-      results.sort(function(a,b){
-        function score(it){if(it.codeNorm===q)return 0;if(it.nameNorm===q)return 1;if(it.codeNorm.indexOf(q)===0)return 2;if(it.nameNorm.indexOf(q)===0)return 3;return 4;}
-        return score(a)-score(b)||a.order-b.order;
+  });
+
+  var bundledACs = [];
+  Object.keys(acGroups).forEach(function (k) {
+    var g = acGroups[k];
+    if (g.indoor && g.outdoor) {
+      var cleanDesc = g.indoor.name
+        .replace(/وحدة داخلية|وحده داخليه|حائطى|حائطي/g, '')
+        .replace(/KAC\S+/i, '')
+        .replace(/\s+/g, ' ').trim();
+      var modelCode = g.indoor.name.match(/KAC\S+/i)[0].replace('/I/', '/SET/');
+      bundledACs.push([
+        g.outdoor.code + '+' + g.indoor.code,
+        'تكييف كامل (وحدة داخلية + خارجية) ' + cleanDesc + ' ' + modelCode,
+        g.outdoor.price + g.indoor.price,
+        true // isBundle flag
+      ]);
+    }
+  });
+
+  var allCombined = bundledACs.concat(rawItems);
+
+  var INDEX = allCombined.map(function (it, order) {
+    var isBundle = Boolean(it[3]);
+    var cat = isBundle ? 'ac_bundle' : categoryFor(it[1]);
+    var feet = calcFeet(it[1], cat);
+    var code = norm(it[0]), name = norm(it[1]);
+    var extra = feet ? ' ' + feet : '';
+    var hay = norm(code + ' ' + name + ' ' + cat + ' ' + extra);
+    var basePrice = Math.round(Number(it[2]) * (1 + taxRate / 100));
+    return {
+      code: it[0], name: it[1], price: Number(it[2]), basePrice: basePrice,
+      order: order, codeNorm: code, nameNorm: name, hay: hay,
+      flat: hay.replace(/\s/g, ''), category: cat, feet: feet, isBundle: isBundle,
+      customDiscVal: '', customDiscType: 'percent'
+    };
+  });
+
+  $('taxnote').textContent = 'الأسعار شاملة ضريبة ' + taxRate + '% ومقرّبة لأقرب جنيه';
+
+  function computeFinalPrice(it) {
+    var p = it.basePrice;
+    // تطبيق الخصم العام أولاً
+    var gVal = Number($('global-disc').value);
+    var gType = $('global-disc-type').value;
+    if (Number.isFinite(gVal) && gVal > 0) {
+      p = gType === 'percent' ? Math.round(p * (1 - Math.min(gVal, 100) / 100)) : Math.max(0, Math.round(p - gVal));
+    }
+    // تطبيق الخصم الفردي الخاص بالمنتج إن وجد
+    var cVal = Number(it.customDiscVal);
+    if (Number.isFinite(cVal) && cVal > 0) {
+      p = it.customDiscType === 'percent' ? Math.round(p * (1 - Math.min(cVal, 100) / 100)) : Math.max(0, Math.round(p - cVal));
+    }
+    return p;
+  }
+
+  // إدارة سلة عرض الأسعار
+  var QUOTE = {}; // code -> {item, qty}
+
+  function updateQuoteUI() {
+    var keys = Object.keys(QUOTE);
+    var bar = $('quote-bar');
+    if (!keys.length) {
+      bar.hidden = true;
+      $('quote-modal').hidden = true;
+      return;
+    }
+    bar.hidden = false;
+    var totalItems = 0, totalPrice = 0;
+    var tbody = $('quote-tbody');
+    tbody.innerHTML = '';
+
+    keys.forEach(function (code) {
+      var entry = QUOTE[code];
+      var unitPrice = computeFinalPrice(entry.item);
+      var sub = unitPrice * entry.qty;
+      totalItems += entry.qty;
+      totalPrice += sub;
+
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td><b>' + entry.item.name + '</b><br><span class="muted" style="font-size:12px">كود: ' + entry.item.code + '</span></td>' +
+        '<td>' + formatter.format(unitPrice) + ' ج</td>' +
+        '<td><div class="qty-ctrl">' +
+          '<button type="button" class="qty-btn" data-act="dec" data-code="' + code + '">-</button>' +
+          '<b>' + entry.qty + '</b>' +
+          '<button type="button" class="qty-btn" data-act="inc" data-code="' + code + '">+</button>' +
+        '</div></td>' +
+        '<td><b>' + formatter.format(sub) + ' ج</b></td>' +
+        '<td><button type="button" class="del-btn" data-act="del" data-code="' + code + '">حذف</button></td>';
+      tbody.appendChild(tr);
+    });
+
+    $('quote-count').textContent = totalItems + ' قطعة (' + keys.length + ' صنف)';
+    $('quote-total').textContent = formatter.format(totalPrice) + ' جنيه';
+    $('modal-total').textContent = formatter.format(totalPrice) + ' جنيه';
+  }
+
+  $('quote-tbody').addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    var code = btn.getAttribute('data-code');
+    var act = btn.getAttribute('data-act');
+    if (!QUOTE[code]) return;
+    if (act === 'inc') QUOTE[code].qty++;
+    if (act === 'dec') {
+      QUOTE[code].qty--;
+      if (QUOTE[code].qty <= 0) delete QUOTE[code];
+    }
+    if (act === 'del') delete QUOTE[code];
+    updateQuoteUI();
+    scheduleRender(false);
+  });
+
+  function formatQuoteText() {
+    var lines = ['📋 *عرض سعر أجهزة كريازي*', 'بتاريخ: ' + new Date().toLocaleDateString('ar-EG'), '------------------------'];
+    var total = 0;
+    Object.keys(QUOTE).forEach(function (code, idx) {
+      var entry = QUOTE[code];
+      var uPrice = computeFinalPrice(entry.item);
+      var sub = uPrice * entry.qty;
+      total += sub;
+      lines.push((idx + 1) + '. ' + entry.item.name);
+      lines.push('   الكود: ' + entry.item.code + ' | الكمية: ' + entry.qty + ' | السعر: ' + formatter.format(sub) + ' جنيه');
+    });
+    lines.push('------------------------');
+    lines.push('💰 *الإجمالي النهائي: ' + formatter.format(total) + ' جنيه* (شامل الضريبة)');
+    return lines.join('\n');
+  }
+
+  $('open-quote').addEventListener('click', function () { $('quote-modal').hidden = false; });
+  $('close-modal').addEventListener('click', function () { $('quote-modal').hidden = true; });
+  $('clear-quote').addEventListener('click', function () { QUOTE = {}; updateQuoteUI(); scheduleRender(false); });
+  $('print-quote').addEventListener('click', function () { window.print(); });
+  $('wa-quote').addEventListener('click', function () {
+    var txt = formatQuoteText();
+    window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank');
+  });
+  $('copy-quote-all').addEventListener('click', function () {
+    var btn = $('copy-quote-all');
+    navigator.clipboard.writeText(formatQuoteText()).then(function () {
+      btn.textContent = 'تم النسخ ✓';
+      setTimeout(function () { btn.textContent = 'نسخ النص'; }, 1600);
+    });
+  });
+
+  function findMatches() {
+    var query = $('q').value;
+    var category = $('category').value;
+    var sortBy = $('sort').value;
+    var maxPrice = Number($('max-price').value) || 0;
+    var tokens = norm(query).split(' ').filter(Boolean);
+    var results = [];
+
+    for (var i = 0; i < INDEX.length; i++) {
+      var it = INDEX[i];
+      if (category !== 'all') {
+        if (category === 'ac') {
+          if (it.category !== 'ac' && it.category !== 'ac_bundle') continue;
+        } else if (it.category !== category) continue;
+      }
+      var finalP = computeFinalPrice(it);
+      if (maxPrice > 0 && finalP > maxPrice) continue;
+
+      var ok = true;
+      for (var j = 0; j < tokens.length; j++) {
+        if (it.hay.indexOf(tokens[j]) === -1 && it.flat.indexOf(tokens[j]) === -1) { ok = false; break; }
+      }
+      if (ok) results.push(it);
+    }
+
+    if (sortBy === 'price_asc') {
+      results.sort(function (a, b) { return computeFinalPrice(a) - computeFinalPrice(b); });
+    } else if (sortBy === 'price_desc') {
+      results.sort(function (a, b) { return computeFinalPrice(b) - computeFinalPrice(a); });
+    } else if (tokens.length) {
+      var q = norm(query);
+      results.sort(function (a, b) {
+        function score(it) {
+          if (it.codeNorm === q) return 0;
+          if (it.isBundle) return 1;
+          if (it.nameNorm === q) return 2;
+          if (it.codeNorm.indexOf(q) === 0) return 3;
+          return 4;
+        }
+        return score(a) - score(b) || a.order - b.order;
       });
     }
     return results;
   }
-  function copyText(it, finalPrice) {
+
+  function copySingleText(it, finalPrice) {
     return 'اسم المنتج: ' + it.name + '\nكود المنتج: ' + it.code + '\nالسعر: ' + formatter.format(finalPrice) + ' جنيه';
   }
-  function discountedPrice(base, input, type) {
-    var amount = Number(input);
-    if (!Number.isFinite(amount) || amount <= 0) return base;
-    var discount = type === 'percent' ? base * Math.min(amount, 100) / 100 : Math.min(amount, base);
-    return Math.max(0, Math.round(base - discount));
-  }
-  function addItem(frag,it) {
-    var row=document.createElement('article');row.className='item';
-    var n=document.createElement('div');n.className='n';
-    var name=document.createElement('div');name.className='name';name.textContent=it.name;n.appendChild(name);
-    if(it.feet){var tag=document.createElement('span');tag.className='tag';tag.textContent='تصنيف البحث: ثلاجة '+it.feet;n.appendChild(tag);}
-    var c=document.createElement('div');c.className='c';
-    var l1=document.createElement('span');l1.textContent='كود المنتج';
-    var code=document.createElement('span');code.className='code';code.textContent=it.code;
-    c.appendChild(l1);c.appendChild(code);n.appendChild(c);row.appendChild(n);
-    var actions=document.createElement('div');actions.className='actions';
-    var basePrice=Math.round(it.price*(1+taxRate/100));
-    var price=document.createElement('div');price.className='price';
-    var b=document.createElement('b');b.textContent=formatter.format(basePrice);
-    var u=document.createElement('span');u.textContent='جنيه';price.appendChild(b);price.appendChild(u);actions.appendChild(price);
-    var discountBox=document.createElement('div');discountBox.className='discount-box';
-    var discountLabel=document.createElement('label');discountLabel.textContent='خصم إضافي';
-    var discountInput=document.createElement('input');discountInput.type='number';discountInput.min='0';discountInput.step='any';discountInput.inputMode='decimal';discountInput.placeholder='قيمة الخصم';discountInput.className='discount-input';discountInput.setAttribute('aria-label','قيمة الخصم الإضافي');
-    var discountType=document.createElement('select');discountType.className='discount-type';discountType.setAttribute('aria-label','نوع الخصم');
-    var percentOpt=document.createElement('option');percentOpt.value='percent';percentOpt.textContent='%';
-    var cashOpt=document.createElement('option');cashOpt.value='cash';cashOpt.textContent='جنيه';discountType.appendChild(percentOpt);discountType.appendChild(cashOpt);
-    var result=document.createElement('span');result.className='discount-result';result.hidden=true;
-    function updateDiscount(){
-      var has=discountInput.value!=='' && Number(discountInput.value)>0;
-      var finalPrice=discountedPrice(basePrice,discountInput.value,discountType.value);
-      result.hidden=!has;result.textContent='بعد الخصم: '+formatter.format(finalPrice)+' جنيه';
-      copy.dataset.finalPrice=String(finalPrice);
+
+  function addItem(frag, it) {
+    var row = document.createElement('article');
+    row.className = 'item' + (it.isBundle ? ' is-bundle' : '');
+    var n = document.createElement('div');
+    n.className = 'n';
+
+    var name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = it.name;
+    n.appendChild(name);
+
+    var tagsRow = document.createElement('div');
+    tagsRow.className = 'tags-row';
+    if (it.isBundle) {
+      var bTag = document.createElement('span');
+      bTag.className = 'tag bundle-tag';
+      bTag.textContent = '❄️ طقم كامل (داخلي + خارجي)';
+      tagsRow.appendChild(bTag);
     }
-    discountInput.addEventListener('input',updateDiscount);discountType.addEventListener('change',updateDiscount);
-    discountBox.appendChild(discountLabel);discountBox.appendChild(discountInput);discountBox.appendChild(discountType);discountBox.appendChild(result);
+    if (it.feet) {
+      var fTag = document.createElement('span');
+      fTag.className = 'tag';
+      fTag.textContent = 'السعة التقريبية: ' + it.feet;
+      tagsRow.appendChild(fTag);
+    }
+    if (tagsRow.childNodes.length) n.appendChild(tagsRow);
+
+    var c = document.createElement('div');
+    c.className = 'c';
+    var l1 = document.createElement('span');
+    l1.textContent = 'كود المنتج';
+    var code = document.createElement('span');
+    code.className = 'code';
+    code.textContent = it.code;
+    c.appendChild(l1);
+    c.appendChild(code);
+    n.appendChild(c);
+    row.appendChild(n);
+
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+
+    var priceCol = document.createElement('div');
+    priceCol.className = 'price-col';
+    var finalP = computeFinalPrice(it);
+    var price = document.createElement('div');
+    price.className = 'price';
+    var b = document.createElement('b');
+    b.textContent = formatter.format(finalP);
+    var u = document.createElement('span');
+    u.textContent = 'جنيه';
+    price.appendChild(b);
+    price.appendChild(u);
+    priceCol.appendChild(price);
+
+    var oldPrice = document.createElement('span');
+    oldPrice.className = 'old-price';
+    oldPrice.textContent = 'قبل الخصم: ' + formatter.format(it.basePrice) + ' ج';
+    oldPrice.hidden = finalP === it.basePrice;
+    priceCol.appendChild(oldPrice);
+    actions.appendChild(priceCol);
+
+    // خصم فردي إضافي
+    var discountBox = document.createElement('div');
+    discountBox.className = 'discount-box';
+    var discountInput = document.createElement('input');
+    discountInput.type = 'number';
+    discountInput.min = '0';
+    discountInput.step = 'any';
+    discountInput.placeholder = 'خصم خاص';
+    discountInput.className = 'discount-input';
+    discountInput.value = it.customDiscVal;
+
+    var discountType = document.createElement('select');
+    discountType.className = 'discount-type';
+    discountType.innerHTML = '<option value="percent">%</option><option value="cash">ج</option>';
+    discountType.value = it.customDiscType;
+
+    function updateItemPrice() {
+      it.customDiscVal = discountInput.value;
+      it.customDiscType = discountType.value;
+      var newP = computeFinalPrice(it);
+      b.textContent = formatter.format(newP);
+      oldPrice.hidden = newP === it.basePrice;
+      if (QUOTE[it.code]) updateQuoteUI();
+    }
+    discountInput.addEventListener('input', updateItemPrice);
+    discountType.addEventListener('change', updateItemPrice);
+    discountBox.appendChild(discountInput);
+    discountBox.appendChild(discountType);
     actions.appendChild(discountBox);
-    var copy=document.createElement('button');copy.type='button';copy.className='copy-btn';copy.textContent='نسخ';
-    copy.addEventListener('click',function(){
-      var finalPrice=Number(copy.dataset.finalPrice||basePrice);
-      var txt=copyText(it,finalPrice);
-      if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(txt).then(function(){copy.textContent='تم النسخ ✓';setTimeout(function(){copy.textContent='نسخ';},1600);}).catch(function(){fallbackCopy(txt,copy);});}
-      else fallbackCopy(txt,copy);
+
+    // زر إضافة لعرض السعر
+    var qBtn = document.createElement('button');
+    qBtn.type = 'button';
+    var inCartQty = QUOTE[it.code] ? QUOTE[it.code].qty : 0;
+    qBtn.className = 'btn-quote' + (inCartQty ? ' in-cart' : '');
+    qBtn.textContent = inCartQty ? 'في العرض (' + inCartQty + ') +' : '+ عرض سعر';
+    qBtn.addEventListener('click', function () {
+      if (!QUOTE[it.code]) QUOTE[it.code] = {item: it, qty: 1};
+      else QUOTE[it.code].qty++;
+      var q = QUOTE[it.code].qty;
+      qBtn.className = 'btn-quote in-cart';
+      qBtn.textContent = 'في العرض (' + q + ') +';
+      updateQuoteUI();
     });
-    actions.appendChild(copy);row.appendChild(actions);frag.appendChild(row);
+    actions.appendChild(qBtn);
+
+    // زر نسخ منفرد
+    var copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'btn-outline';
+    copy.textContent = 'نسخ';
+    copy.addEventListener('click', function () {
+      var txt = copySingleText(it, computeFinalPrice(it));
+      navigator.clipboard.writeText(txt).then(function () {
+        copy.textContent = 'تم ✓';
+        setTimeout(function () { copy.textContent = 'نسخ'; }, 1500);
+      });
+    });
+    actions.appendChild(copy);
+
+    row.appendChild(actions);
+    frag.appendChild(row);
   }
-  function fallbackCopy(txt,button){
-    var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
-    try{var ok=document.execCommand('copy');button.textContent=ok?'تم النسخ ✓':'تعذر النسخ';}
-    catch(e){button.textContent='تعذر النسخ';}
-    ta.remove();setTimeout(function(){button.textContent='نسخ';},1800);
+
+  function render() {
+    framePending = false;
+    var query = $('q').value;
+    var found = findMatches();
+    var list = $('list'), frag = document.createDocumentFragment();
+    var shown = Math.min(found.length, visibleLimit);
+    for (var i = 0; i < shown; i++) addItem(frag, found[i]);
+
+    if (!found.length) {
+      var empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'لا توجد نتائج مطابقة للبحث أو الميزانية المحددة.';
+      frag.appendChild(empty);
+    }
+    list.replaceChildren(frag);
+    $('clear').hidden = !query.length;
+    $('count').textContent = 'عدد النتائج: ' + found.length + (shown < found.length ? ' — المعروض ' + shown : '');
+    $('more-wrap').hidden = shown >= found.length;
+    $('more').textContent = 'عرض المزيد (' + (found.length - shown) + ')';
+    updateQuoteUI();
   }
-  function render(){
-    framePending=false;var query=$('q').value,category=$('category').value;
-    var found=findMatches(query,category),list=$('list'),frag=document.createDocumentFragment();
-    var shown=Math.min(found.length,visibleLimit);
-    for(var i=0;i<shown;i++)addItem(frag,found[i]);
-    if(!found.length){var empty=document.createElement('div');empty.className='empty';empty.textContent=query?'لا توجد نتائج مطابقة. جرّب كلمة مختلفة أو جزءًا من الكود.':'لا توجد أصناف مسعّرة في هذا التصنيف.';frag.appendChild(empty);}
-    list.replaceChildren(frag);$('clear').hidden=!query.length;
-    $('count').textContent='عدد النتائج: '+found.length+(shown<found.length?' — المعروض '+shown:'');
-    $('more-wrap').hidden=shown>=found.length;$('more').textContent='عرض المزيد ('+(found.length-shown)+')';
+
+  function scheduleRender(reset) {
+    if (reset) visibleLimit = PAGE_SIZE;
+    if (framePending) return;
+    framePending = true;
+    window.requestAnimationFrame(render);
   }
-  function scheduleRender(reset){if(reset)visibleLimit=PAGE_SIZE;if(framePending)return;framePending=true;window.requestAnimationFrame(render);}
-  $('q').addEventListener('input',function(){scheduleRender(true);});
-  $('category').addEventListener('change',function(){scheduleRender(true);});
-  $('clear').addEventListener('click',function(){$('q').value='';visibleLimit=PAGE_SIZE;scheduleRender(false);$('q').focus();});
-  $('more').addEventListener('click',function(){visibleLimit+=PAGE_SIZE;scheduleRender(false);});
+
+  ['q', 'category', 'sort', 'max-price', 'global-disc', 'global-disc-type'].forEach(function (id) {
+    $(id).addEventListener('input', function () { scheduleRender(true); });
+    $(id).addEventListener('change', function () { scheduleRender(true); });
+  });
+
+  $('clear').addEventListener('click', function () {
+    $('q').value = '';
+    scheduleRender(true);
+    $('q').focus();
+  });
+  $('more').addEventListener('click', function () {
+    visibleLimit += PAGE_SIZE;
+    scheduleRender(false);
+  });
+
   render();
 })();
 </script>
