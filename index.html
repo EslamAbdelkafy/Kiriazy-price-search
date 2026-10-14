@@ -82,14 +82,18 @@ button:active{transform:translateY(1px)}
 #clear:hover{background:var(--soft)}
 #clear[hidden]{display:none}
 
-.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;padding-top:4px}
+.meta-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:2px}
+#count{font-weight:700;color:var(--green);font-size:14px}
+.adv-toggle-btn{min-height:38px;padding:0 14px;font-size:13px;background:var(--surface-2);color:var(--ink);border:1.5px solid var(--line);border-radius:10px}
+.adv-toggle-btn:hover{background:var(--soft);border-color:var(--green)}
+.adv-toggle-btn.active{background:var(--soft);border-color:var(--green);color:var(--green)}
+
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.adv-grid[hidden]{display:none}
 .adv-grid select,.adv-grid input{height:46px;padding:0 12px;font-size:14px;font-weight:600;width:100%}
 .global-disc-wrap{display:flex;gap:6px}
 .global-disc-wrap input{flex:1}
 .global-disc-wrap select{width:82px;flex:0 0 auto}
-
-.meta-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:4px;border-top:1px solid var(--line)}
-#count{font-weight:700;color:var(--green);font-size:14px}
 
 #list{display:flex;flex-direction:column;gap:10px}
 .item{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;transition:border-color .15s,box-shadow .15s}
@@ -130,25 +134,27 @@ button:active{transform:translateY(1px)}
 .quote-bar[hidden]{display:none}
 .quote-summary{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .quote-badge{background:var(--gold);color:#1f2933;font-weight:700;padding:4px 12px;border-radius:99px;font-size:14px}
-.quote-total{font-size:18px;font-weight:700;color:var(--green)}
+.quote-total{font-size:19px;font-weight:700;color:var(--green)}
 .quote-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* نافذة تفاصيل عرض السعر */
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100}
 .modal-backdrop[hidden]{display:none}
-.modal{background:var(--surface);border:1px solid var(--line);border-radius:20px;width:100%;max-width:760px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow:hidden}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:20px;width:100%;max-width:780px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35);overflow:hidden}
 .modal-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
 .modal-head h2{margin:0;font-size:20px;color:var(--green)}
-.modal-body{padding:18px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.modal-body{padding:18px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
 .quote-table{width:100%;border-collapse:collapse;font-size:14px}
 .quote-table th,.quote-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right}
 .quote-table th{color:var(--muted);font-weight:700;font-size:13px}
+.quote-table tfoot td{background:var(--soft);font-weight:700;font-size:16px;color:var(--green);border-top:2px solid var(--green);border-bottom:none;padding:14px 10px}
 .qty-ctrl{display:inline-flex;align-items:center;gap:6px}
 .qty-btn{min-height:28px;width:28px;padding:0;border-radius:7px;font-size:15px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
 .qty-btn:hover{background:var(--soft)}
 .del-btn{background:transparent;color:#e11d48;border:none;min-height:28px;padding:0 6px;font-size:13px}
 .del-btn:hover{background:rgba(225,29,72,.1)}
 .modal-foot{padding:16px 22px;border-top:1px solid var(--line);background:var(--surface-2);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.grand-total-box{background:var(--soft);border:1.5px solid var(--green);padding:8px 14px;border-radius:12px;font-size:15px;font-weight:700}
 .wa-btn{background:#25D366;border-color:#25D366;color:#fff}
 .wa-btn:hover{background:#1ebe5a}
 
@@ -163,6 +169,7 @@ button:active{transform:translateY(1px)}
   .quote-bar{padding:12px 14px;bottom:10px;width:calc(100% - 20px)}
   .quote-actions{width:100%}
   .quote-actions button{flex:1}
+  .grand-total-box{width:100%;text-align:center}
 }
 
 /* تنسيق خاص للطباعة PDF */
@@ -190,13 +197,18 @@ button:active{transform:translateY(1px)}
 </div>
 
 <div class="card search-card">
-<label class="lbl" for="q">ابحث عن منتج بالاسم أو الكود أو السعة بالقدم</label>
+<label class="lbl" for="q">ابحث عن منتج بالاسم أو الكود</label>
 <div class="row">
-<input id="q" type="search" placeholder="مثال: ثلاجة 16 قدم أو تكييف 1.5 أو 10533130" autocomplete="off">
+<input id="q" type="search" placeholder="مثال: ثلاجة 350 أو تكييف 1.5 أو 10533130" autocomplete="off">
 <button id="clear" type="button" hidden>مسح</button>
 </div>
 
-<div class="adv-grid">
+<div class="meta-bar">
+  <button id="adv-toggle" type="button" class="adv-toggle-btn" aria-expanded="false">⚙️ خيارات بحث متقدمة ▾</button>
+  <div class="muted" id="count" aria-live="polite"></div>
+</div>
+
+<div id="adv-panel" class="adv-grid" hidden>
   <label class="lbl" for="category">نوع الجهاز
     <select id="category">
       <option value="all">كل أنواع الأجهزة</option>
@@ -235,10 +247,6 @@ button:active{transform:translateY(1px)}
     </div>
   </label>
 </div>
-
-<div class="meta-bar">
-  <div class="muted" id="count" aria-live="polite"></div>
-</div>
 </div>
 
 <div id="list" aria-live="polite"></div>
@@ -251,7 +259,7 @@ button:active{transform:translateY(1px)}
 <div id="quote-bar" class="quote-bar" hidden>
   <div class="quote-summary">
     <span id="quote-count" class="quote-badge">0 أصناف</span>
-    <span>إجمالي عرض السعر: <b id="quote-total" class="quote-total">0 جنيه</b></span>
+    <span>إجمالي عرض السعر بالكامل: <b id="quote-total" class="quote-total">0 جنيه</b></span>
   </div>
   <div class="quote-actions">
     <button id="open-quote" type="button">معاينة وتصدير العرض</button>
@@ -273,17 +281,23 @@ button:active{transform:translateY(1px)}
             <th>الصنف</th>
             <th>سعر الوحدة</th>
             <th>الكمية</th>
-            <th>الإجمالي</th>
+            <th>إجمالي الصنف</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="quote-tbody"></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">إجمالي عرض السعر بالكامل (شامل الضريبة والخصم)</td>
+            <td colspan="2" id="table-grand-total">0 جنيه</td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <div class="modal-foot">
-      <div>الإجمالي النهائي (شامل الضريبة والخصم): <b id="modal-total" class="quote-total">0 جنيه</b></div>
+      <div class="grand-total-box">إجمالي عرض السعر: <span id="modal-total" class="quote-total">0 جنيه</span></div>
       <div class="quote-actions">
-        <button id="copy-quote-all" type="button" class="btn-outline">نسخ النص</button>
+        <button id="copy-quote-all" type="button" class="btn-outline">نسخ العرض</button>
         <button id="wa-quote" type="button" class="wa-btn">إرسال WhatsApp</button>
         <button id="print-quote" type="button">طباعة / PDF</button>
       </div>
@@ -301,7 +315,7 @@ button:active{transform:translateY(1px)}
   var taxRate = Number(data.taxRate) || 0;
   var formatter = new Intl.NumberFormat('en-US', {maximumFractionDigits:0});
 
-  // 1. إدارة الوضع الليلي
+  // إدارة الوضع الليلي
   var savedTheme = localStorage.getItem('kp_theme') || 'light';
   function applyTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
@@ -312,6 +326,16 @@ button:active{transform:translateY(1px)}
   $('theme-toggle').addEventListener('click', function () {
     var current = document.documentElement.getAttribute('data-theme');
     applyTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // إظهار وإخفاء خيارات البحث المتقدمة
+  $('adv-toggle').addEventListener('click', function () {
+    var panel = $('adv-panel');
+    var isHidden = panel.hidden;
+    panel.hidden = !isHidden;
+    $('adv-toggle').setAttribute('aria-expanded', String(isHidden));
+    $('adv-toggle').classList.toggle('active', isHidden);
+    $('adv-toggle').textContent = isHidden ? '⚙️ إخفاء خيارات البحث ▴' : '⚙️ خيارات بحث متقدمة ▾';
   });
 
   function norm(s) {
@@ -338,32 +362,18 @@ button:active{transform:translateY(1px)}
     return 'other';
   }
 
-  // توسيع حساب القدم ليشمل كل الثلاجات والديب فريزر تلقائياً
-  function calcFeet(name, cat) {
+  // العودة للدالة الأصلية بدون تحويل اللتر التلقائي
+  function fridgeFeet(name) {
     var n = norm(name);
-    if (cat !== 'fridge' && cat !== 'freezer') return '';
-    if (/لؤلؤه/.test(n)) return '20 قدم';
-    if (/فيروزه/.test(n)) return '18 قدم';
-    if (/زمرده/.test(n)) return '16 قدم';
-    if (/سولتير|برلنت/.test(n)) return '14 قدم';
-    if (/12 قدم/.test(n)) return '12 قدم';
-    var m = n.match(/(\d{3})\s*لتر/);
-    if (m) {
-      var liters = parseInt(m[1], 10);
-      if (liters >= 650) return '25 قدم';
-      if (liters >= 600) return '22 قدم';
-      if (liters >= 520) return '20 قدم';
-      if (liters >= 470) return '18 قدم';
-      if (liters >= 410) return '16 قدم';
-      if (liters >= 360) return '14 قدم';
-      if (liters >= 310) return '12 قدم';
-      if (liters >= 260) return '10 قدم';
-      return Math.round(liters / 28.3) + ' قدم';
-    }
+    if (!/ثلاجه|ثلاجة/.test(n)) return '';
+    if (/لؤلؤه|لؤلؤة|لؤلؤه/.test(n)) return '20 قدم';
+    if (/فيروزه|فيروزة/.test(n)) return '18 قدم';
+    if (/زمرده|زمردة/.test(n)) return '16 قدم';
+    if (/سولتير|سولتيير|برلنت|برلنتي/.test(n)) return '14 قدم';
     return '';
   }
 
-  // 2. توليد أطقم التكييفات الكاملة تلقائياً (دمج الوحدة الداخلية + الخارجية)
+  // توليد أطقم التكييفات الكاملة تلقائياً
   var rawItems = data.items.slice();
   var acGroups = {};
   rawItems.forEach(function (it) {
@@ -390,7 +400,7 @@ button:active{transform:translateY(1px)}
         g.outdoor.code + '+' + g.indoor.code,
         'تكييف كامل (وحدة داخلية + خارجية) ' + cleanDesc + ' ' + modelCode,
         g.outdoor.price + g.indoor.price,
-        true // isBundle flag
+        true
       ]);
     }
   });
@@ -400,9 +410,9 @@ button:active{transform:translateY(1px)}
   var INDEX = allCombined.map(function (it, order) {
     var isBundle = Boolean(it[3]);
     var cat = isBundle ? 'ac_bundle' : categoryFor(it[1]);
-    var feet = calcFeet(it[1], cat);
+    var feet = fridgeFeet(it[1]);
     var code = norm(it[0]), name = norm(it[1]);
-    var extra = feet ? ' ' + feet : '';
+    var extra = feet ? ' ثلاجه ' + feet : '';
     var hay = norm(code + ' ' + name + ' ' + cat + ' ' + extra);
     var basePrice = Math.round(Number(it[2]) * (1 + taxRate / 100));
     return {
@@ -417,13 +427,11 @@ button:active{transform:translateY(1px)}
 
   function computeFinalPrice(it) {
     var p = it.basePrice;
-    // تطبيق الخصم العام أولاً
     var gVal = Number($('global-disc').value);
     var gType = $('global-disc-type').value;
     if (Number.isFinite(gVal) && gVal > 0) {
       p = gType === 'percent' ? Math.round(p * (1 - Math.min(gVal, 100) / 100)) : Math.max(0, Math.round(p - gVal));
     }
-    // تطبيق الخصم الفردي الخاص بالمنتج إن وجد
     var cVal = Number(it.customDiscVal);
     if (Number.isFinite(cVal) && cVal > 0) {
       p = it.customDiscType === 'percent' ? Math.round(p * (1 - Math.min(cVal, 100) / 100)) : Math.max(0, Math.round(p - cVal));
@@ -432,7 +440,7 @@ button:active{transform:translateY(1px)}
   }
 
   // إدارة سلة عرض الأسعار
-  var QUOTE = {}; // code -> {item, qty}
+  var QUOTE = {};
 
   function updateQuoteUI() {
     var keys = Object.keys(QUOTE);
@@ -456,7 +464,7 @@ button:active{transform:translateY(1px)}
 
       var tr = document.createElement('tr');
       tr.innerHTML =
-        '<td><b>' + entry.item.name + '</b><br><span class="muted" style="font-size:12px">كود: ' + entry.item.code + '</span></td>' +
+        '<td><b>' + entry.item.name + '</b></td>' +
         '<td>' + formatter.format(unitPrice) + ' ج</td>' +
         '<td><div class="qty-ctrl">' +
           '<button type="button" class="qty-btn" data-act="dec" data-code="' + code + '">-</button>' +
@@ -468,9 +476,11 @@ button:active{transform:translateY(1px)}
       tbody.appendChild(tr);
     });
 
+    var formattedGrandTotal = formatter.format(totalPrice) + ' جنيه';
     $('quote-count').textContent = totalItems + ' قطعة (' + keys.length + ' صنف)';
-    $('quote-total').textContent = formatter.format(totalPrice) + ' جنيه';
-    $('modal-total').textContent = formatter.format(totalPrice) + ' جنيه';
+    $('quote-total').textContent = formattedGrandTotal;
+    $('modal-total').textContent = formattedGrandTotal;
+    $('table-grand-total').textContent = formattedGrandTotal;
   }
 
   $('quote-tbody').addEventListener('click', function (e) {
@@ -490,18 +500,24 @@ button:active{transform:translateY(1px)}
   });
 
   function formatQuoteText() {
-    var lines = ['📋 *عرض سعر أجهزة كريازي*', 'بتاريخ: ' + new Date().toLocaleDateString('ar-EG'), '------------------------'];
-    var total = 0;
+    var lines = ['📋 *عرض سعر مجمع*', 'بتاريخ: ' + new Date().toLocaleDateString('ar-EG'), '------------------------'];
+    var total = 0, totalQty = 0;
     Object.keys(QUOTE).forEach(function (code, idx) {
       var entry = QUOTE[code];
       var uPrice = computeFinalPrice(entry.item);
       var sub = uPrice * entry.qty;
       total += sub;
+      totalQty += entry.qty;
       lines.push((idx + 1) + '. ' + entry.item.name);
-      lines.push('   الكود: ' + entry.item.code + ' | الكمية: ' + entry.qty + ' | السعر: ' + formatter.format(sub) + ' جنيه');
+      if (entry.qty > 1) {
+        lines.push('   الكمية: ' + entry.qty + ' × ' + formatter.format(uPrice) + ' ج = إجمالي الصنف: ' + formatter.format(sub) + ' جنيه');
+      } else {
+        lines.push('   السعر: ' + formatter.format(sub) + ' جنيه');
+      }
     });
     lines.push('------------------------');
-    lines.push('💰 *الإجمالي النهائي: ' + formatter.format(total) + ' جنيه* (شامل الضريبة)');
+    lines.push('📦 إجمالي عدد القطع: ' + totalQty);
+    lines.push('💰 *إجمالي عرض السعر بالكامل: ' + formatter.format(total) + ' جنيه*');
     return lines.join('\n');
   }
 
@@ -517,7 +533,7 @@ button:active{transform:translateY(1px)}
     var btn = $('copy-quote-all');
     navigator.clipboard.writeText(formatQuoteText()).then(function () {
       btn.textContent = 'تم النسخ ✓';
-      setTimeout(function () { btn.textContent = 'نسخ النص'; }, 1600);
+      setTimeout(function () { btn.textContent = 'نسخ العرض'; }, 1600);
     });
   });
 
@@ -566,8 +582,9 @@ button:active{transform:translateY(1px)}
     return results;
   }
 
+  // تعديل رقم 4: نسخ اسم المنتج وسعره فقط بدون الكود
   function copySingleText(it, finalPrice) {
-    return 'اسم المنتج: ' + it.name + '\nكود المنتج: ' + it.code + '\nالسعر: ' + formatter.format(finalPrice) + ' جنيه';
+    return 'اسم المنتج: ' + it.name + '\nالسعر: ' + formatter.format(finalPrice) + ' جنيه';
   }
 
   function addItem(frag, it) {
@@ -592,7 +609,7 @@ button:active{transform:translateY(1px)}
     if (it.feet) {
       var fTag = document.createElement('span');
       fTag.className = 'tag';
-      fTag.textContent = 'السعة التقريبية: ' + it.feet;
+      fTag.textContent = 'تصنيف البحث: ثلاجة ' + it.feet;
       tagsRow.appendChild(fTag);
     }
     if (tagsRow.childNodes.length) n.appendChild(tagsRow);
@@ -632,7 +649,6 @@ button:active{transform:translateY(1px)}
     priceCol.appendChild(oldPrice);
     actions.appendChild(priceCol);
 
-    // خصم فردي إضافي
     var discountBox = document.createElement('div');
     discountBox.className = 'discount-box';
     var discountInput = document.createElement('input');
@@ -662,7 +678,6 @@ button:active{transform:translateY(1px)}
     discountBox.appendChild(discountType);
     actions.appendChild(discountBox);
 
-    // زر إضافة لعرض السعر
     var qBtn = document.createElement('button');
     qBtn.type = 'button';
     var inCartQty = QUOTE[it.code] ? QUOTE[it.code].qty : 0;
@@ -678,7 +693,6 @@ button:active{transform:translateY(1px)}
     });
     actions.appendChild(qBtn);
 
-    // زر نسخ منفرد
     var copy = document.createElement('button');
     copy.type = 'button';
     copy.className = 'btn-outline';
@@ -707,7 +721,7 @@ button:active{transform:translateY(1px)}
     if (!found.length) {
       var empty = document.createElement('div');
       empty.className = 'empty';
-      empty.textContent = 'لا توجد نتائج مطابقة للبحث أو الميزانية المحددة.';
+      empty.textContent = 'لا توجد نتائج مطابقة للبحث أو الفلتر المحدد.';
       frag.appendChild(empty);
     }
     list.replaceChildren(frag);
